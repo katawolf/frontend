@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  cloudrun: circleci/gcp-cloud-run@1.0.2
 jobs:
   "build and test":
     executor:
@@ -9,11 +10,32 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run:
-                npm install
-                npm test
-
+            - run: npm install
+            - run: npm test
+  "build and deploy":
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - cloudrun/init
+      - cloudrun/build:
+          tag: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
+      - cloudrun/deploy:
+          image: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
+          platform: managed
+          region: ${GOOGLE_COMPUTE_ZONE}
+          service-name: frontend
+          unauthenticated: true
 workflows:
-    "default":
-      jobs:
-        - "build and test"
+  "default":
+    jobs:
+      - "build and test":
+          filters:
+            branches:
+              ignore:
+                - master
+      - "build and deploy":
+          filters:
+            branches:
+              only:
+                - master
