@@ -33,7 +33,7 @@ jobs:
             echo "Service deployed"
             echo
             gcloud beta run services add-iam-policy-binding --region=${GOOGLE_COMPUTE_ZONE} --member=allUsers --role=roles/run.invoker ${SERVICE_NAME}
-            GET_GCP_DEPLOY_ENDPOINT=$(gcloud beta run services describe ${SERVICE_NAME} --platform managed --region ${GOOGLE_COMPUTE_ZONE} --format="value(status.address.url)")
+            GET_GCP_DEPLOY_ENDPOINT=`gcloud beta run services describe ${SERVICE_NAME} --platform managed --region ${GOOGLE_COMPUTE_ZONE} --format="value(status.address.url)"`
             echo "export GCP_DEPLOY_ENDPOINT=$GET_GCP_DEPLOY_ENDPOINT" >> $BASH_ENV
             source $BASH_ENV
             echo $GCP_DEPLOY_ENDPOINT
