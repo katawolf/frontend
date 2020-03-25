@@ -20,12 +20,20 @@ jobs:
       - cloudrun/init
       - cloudrun/build:
           tag: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
-      - cloudrun/deploy:
-          image: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
-          platform: managed
-          region: ${GOOGLE_COMPUTE_ZONE}
-          service-name: frontend
-          unauthenticated: true
+#      - cloudrun/deploy:
+#          image: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
+#          platform: managed
+#          region: ${GOOGLE_COMPUTE_ZONE}
+#          service-name: frontend
+#          unauthenticated: true
+      - run:
+          command: >
+            gcloud beta run deploy frontend \
+              --image "eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}"
+              --platform managed \
+              --region ${GOOGLE_COMPUTE_ZONE} \
+              --allow-unauthenticated \
+              --set-env-vars "DECISION_SERVICE_URL=${DECISION_SERVICE_URL}"
 workflows:
   "default":
     jobs:
