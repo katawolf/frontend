@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@1.1.6
   cloudrun: circleci/gcp-cloud-run@1.0.2
 jobs:
-  "build and test":
+  "Check and build":
     executor:
       name: node/default
     steps:
@@ -12,7 +12,7 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
-  "build and deploy":
+  "Deploy on cloud run":
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -20,29 +20,31 @@ jobs:
       - cloudrun/init
       - cloudrun/build:
           tag: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
-#      - cloudrun/deploy:
-#          image: 'eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}'
-#          platform: managed
-#          region: ${GOOGLE_COMPUTE_ZONE}
-#          service-name: frontend
-#          unauthenticated: true
       - run:
           command: >
             gcloud beta run deploy frontend \
-              --image "eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}"
+              --image "eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}" \
               --platform managed \
               --region ${GOOGLE_COMPUTE_ZONE} \
               --allow-unauthenticated \
               --set-env-vars "DECISION_SERVICE_URL=${DECISION_SERVICE_URL}"
+            echo
+            echo "Service deployed"
+            echo
+            GET_GCP_DEPLOY_ENDPOINT=$(gcloud beta run services describe frontend --platform managed --region ${GOOGLE_COMPUTE_ZONE} --format="value(status.address.url)")
+            echo "export GCP_DEPLOY_ENDPOINT=$GET_GCP_DEPLOY_ENDPOINT" >> $BASH_ENV
+            source $BASH_ENV
+            echo $GCP_DEPLOY_ENDPOINT
+          name: Cloud Run Deploy
 workflows:
   "default":
     jobs:
-      - "build and test":
+      - "Check and build":
           filters:
             branches:
               ignore:
                 - master
-      - "build and deploy":
+      - "Deploy on cloud run":
           filters:
             branches:
               only:
