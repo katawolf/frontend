@@ -24,9 +24,10 @@ jobs:
           command: >
             SERVICE_NAME=frontend
             gcloud beta run deploy ${SERVICE_NAME} \
-              --image "eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:${CIRCLE_SHA1}" \
+              --image "eu.gcr.io/${GOOGLE_PROJECT_ID}/${SERVICE_NAME}:${CIRCLE_SHA1}" \
               --platform managed \
               --region ${GOOGLE_COMPUTE_ZONE} \
+              --port 80 \
               --set-env-vars "DECISION_SERVICE_URL=${DECISION_SERVICE_URL}"
             echo
             echo "Service deployed"
