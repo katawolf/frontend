@@ -37,15 +37,19 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Docker
+## Kubernetes (deploy on cluster)
 
-### `docker build -t [IMAGE] .`
+### `docker build -t jtutzo/katawolf/frontend .`
 
-Build  app and docker image
+Build app and docker image
 
-### `docker run --rm -p 80:80 [IMAGE]`
+### `kubectl apply -f ./k8s-manifests`
 
-Launch container
+Deploy on kubernetes cluster
+
+### `kubectl delete -f ./k8s-manifests`
+
+Delete on kubernetes cluster
 
 ## Learn More
 
