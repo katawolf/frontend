@@ -1,0 +1,9 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+metadata:
+  name: katawolf
+build:
+  artifacts:
+  - image: jtutzo/katawolf/frontend
+  tagPolicy:
+    gitCommit: {}
