@@ -1,7 +1,7 @@
 # Frontend
 
-Main frontend of decision app
-This service is deployed with cloud run on [https://frontend.katawolf.jtutzo.fr](https://frontend.katawolf.jtutzo.fr)
+Main frontend of decision app<br />
+This service is deployed with cloud run on [https://frontend.katawolf.jtutzo.fr](https://frontend.katawolf.jtutzo.fr)<br />
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
