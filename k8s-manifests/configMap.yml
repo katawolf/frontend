@@ -4,4 +4,4 @@ metadata:
   name: frontend-config
 data:
   port: 80
-  decisionservice: "http://decisionservice:3000"
+  decisionservice: "http://decisionservice:8080"
