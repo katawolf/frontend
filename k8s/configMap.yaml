@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  port: "80"
+  url.decisionservice: "http://decisionservice:8080"

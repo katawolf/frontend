@@ -23,11 +23,11 @@ spec:
                 configMapKeyRef:
                   name: frontend-config
                   key: port
-            - name: DECISION_SERVICE
+            - name: DECISION_SERVICE_URL
               valueFrom:
                 configMapKeyRef:
                   name: frontend-config
-                  key: decisionservice
+                  key: url.decisionservice
           resources:
             limits:
               memory: 256Mi
