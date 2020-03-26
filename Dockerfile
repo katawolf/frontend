@@ -6,9 +6,6 @@ COPY . ./
 RUN yarn test:ci && yarn build
 
 FROM nginx:1.12-alpine
-COPY nginx.conf /etc/nginx/templates/default.template
-ENV PORT ${PORT:-80}
-ENV DECISION_SERVICE_URL ${DECISION_SERVICE_URL:-"http://localhost:3000"}
+COPY nginx.conf /etc/nginx/conf.d/default.template
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
-EXPOSE ${PORT:-80}
-CMD envsubst < /etc/nginx/templates/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'
+CMD envsubst < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'
