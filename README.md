@@ -1,3 +1,7 @@
+# Frontend
+
+Main frontend of decision app
+This service is deployed with cloud run on [https://frontend.katawolf.jtutzo.fr](https://frontend.katawolf.jtutzo.fr)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -37,19 +41,35 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Kubernetes (deploy on cluster)
+## Deployment management on kubernetes cluster
 
-### `docker build -t jtutzo/katawolf/frontend .`
+### With `kubectl`
 
-Build app and docker image
+First build your app and create a docker image.
 
-### `kubectl apply -f ./k8s-manifests`
+`docker build -t jtutzo/katawolf/frontend .`
 
-Deploy on kubernetes cluster
+Push docker image on your repository.
 
-### `kubectl delete -f ./k8s-manifests`
+`docker push jtutzo/katawolf/frontend`
 
-Delete on kubernetes cluster
+Deploy app on your kubernetes cluster.
+
+`kubectl apply -f ./k8s`
+
+After for remove app on your kubernetes cluster.
+
+`kubectl delete -f ./k8s`
+
+### With `skaffold`
+
+Build and deploy on your kubernetes cluster.
+
+`skaffold run`
+
+After for remove app on your kubernetes cluster.
+
+`skaffold delete`
 
 ## Learn More
 
